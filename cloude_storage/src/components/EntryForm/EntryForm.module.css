@@ -1,0 +1,20 @@
+.inscription {
+    font-family: "Arial Black", Gadget, sans-serif;
+    color: rgb(180, 240, 182);
+    font-size: 18px;
+    margin-left: 14px;
+    margin-top: 10px;
+}
+
+.label {
+    font-family: "Arial Black", Gadget, sans-serif; 
+    font-size: 12px;
+    color: #f2ebeb;
+    margin-left: 14px;
+}
+
+.formRegistr {
+    margin-left: 60px;
+    margin-top: 10px;
+
+}

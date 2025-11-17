@@ -1,0 +1,24 @@
+body {
+    margin: 0;
+    display: flex;
+    box-sizing: border-box;
+    background-image: url('../../img/home.jfif');
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: "Arial Black", Gadget, sans-serif;
+   
+  }
+
+#root {
+  width: 100vw;
+}
+
+.container {
+    max-width: 80%;
+    min-width: 1440px;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    
+}

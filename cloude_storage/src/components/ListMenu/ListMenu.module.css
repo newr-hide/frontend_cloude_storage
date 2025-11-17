@@ -1,0 +1,7 @@
+.listMenu {
+    display: flex;
+    list-style: none;
+    /* border: 1px solid black; */
+    gap: 30px; 
+    margin-left: 20px;  
+}

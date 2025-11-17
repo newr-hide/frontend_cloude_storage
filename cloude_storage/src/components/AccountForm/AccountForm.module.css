@@ -1,0 +1,14 @@
+.label {
+    font-family: "Arial Black", Gadget, sans-serif; 
+    font-size: 22px;
+    color: #f2ebeb;
+    margin-left: 14px;
+}
+
+.form {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-left: 50px;
+    margin-top: 10px;
+}

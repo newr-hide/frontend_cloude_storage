@@ -1,0 +1,16 @@
+.content {
+    color: aqua;
+    max-width: 1200px;
+    margin-left: 200px;
+    margin-top: 100px;
+}
+
+.global {
+    display: flex;
+    flex-direction: column;
+}
+
+.link {
+    margin-top: 20px;
+    margin-left: 30px;
+}
