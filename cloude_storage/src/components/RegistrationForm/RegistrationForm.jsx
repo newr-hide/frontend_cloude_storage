@@ -4,6 +4,7 @@ import { Input } from '../../components/Input/Input'
 import { useState } from 'react'
 import { register } from '../../api/api';
 import { useNavigate } from 'react-router-dom';
+import { api } from '../../api/api';
 
 export function RegistrationForm({submitText}) {
 
@@ -12,10 +13,12 @@ export function RegistrationForm({submitText}) {
     const [email, setEmail] = useState('')
     const [error, setError] = useState('')
     const navigate = useNavigate()
+
+
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         
-        // Валидация входных данных
         try {
             if (!validateLogin(login)) {
                 throw new Error('Неверный формат логина');
@@ -26,14 +29,34 @@ export function RegistrationForm({submitText}) {
             if (!validatePassword(password)) {
                 throw new Error('Неверный формат пароля');
             }
-    
-             await register({
-                login,
-                email,
-                password
-            });
+            try {
+                const response = await register(
+                    {
+                        login,
+                        email,
+                        password
+                    }
+                )
+                console.log('Ответ сервера:', response);
+                
+                if (!response || !response.tokens || !response.user) {
+                    throw new Error('Неверный ответ от сервера');
+                }
+                
+                const { access, refresh } = response.tokens;
+                const { id } = response.user;
+                localStorage.setItem('refresh_token', refresh);
+                localStorage.setItem('access_token', access);
+                localStorage.setItem('user_id', id);
+                api.defaults.headers.common['Authorization'] = `Bearer ${access}`;
+                navigate(`/profile/${id}`)
+                
+            } catch (error) {
+                console.log(error)
+            }
+             
 
-            navigate('/profile')
+
         } catch (error) {
             setError('Произошла ошибка при регистрации');
             console.error('Ошибка регистрации:', error);

@@ -10,7 +10,7 @@ export default function AppRouter() {
                 <Route path="/" element={<Home/>} />
                 <Route path="/registration" element={<Registration />} />
                 <Route path='/about' element={<About/>}/>
-                <Route path='/profile' element={<AccountPage/>}/>
+                <Route path='/profile/:userId' element={<AccountPage/>}/>
              
             </Routes>
         </Router>

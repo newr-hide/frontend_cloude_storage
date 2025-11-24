@@ -17,12 +17,6 @@
     margin-left: 400px;
 }
 
-.document {
-    display: flex;
-    gap: 20px;
-    color: rgb(180, 240, 182);
-}
-
 .titleList {
     display: flex;
     gap: 20px;
@@ -33,5 +27,4 @@
 .label {
     color: rgb(180, 240, 182);
 }
-
 

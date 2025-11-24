@@ -2,14 +2,35 @@ import { useState } from 'react'
 import { Button } from '../Button/Button'
 import { Input } from '../Input/Input'
 import S from './EntryForm.module.css'
+import { useNavigate } from 'react-router-dom'
+import { loginFunction } from '../../api/api'
 
 
-export function Form({submitText}) {
+export function EntryForm({submitText}) {
     const [login, setLogin] = useState('')
     const [password, setPassword] = useState('')
-    const handleSubmit = (event) =>{
+    const [error, setError] = useState()
+    const navigate = useNavigate()
+
+    
+    const handleSubmit = async (event) =>{
         event.preventDefault()
         // console.log({login}, {password})
+        try {
+            const response = await loginFunction({
+                login: login,  
+                password: password
+            });
+
+            navigate(`/profile/${response.user.id}`);
+        } catch (err) {
+            if (err.message === 'Неверные логин или пароль') {
+                setError('Неверные логин или пароль');
+            } else {
+                setError('Произошла ошибка при авторизации');
+            }
+            console.error('Ошибка при авторизации:', err);
+        }
     }
 
     return(
@@ -20,7 +41,7 @@ export function Form({submitText}) {
                 <div className={S.inscription}>Пароль</div>
                 <Input value={password} onChange={(e) => setPassword(e.target.value)}/>
                 <div className={S.label}>Введите пароль</div>
-                <Button type={'submit'} title={submitText}/>
+                <Button type={'submit'} title={submitText} />
         </form>
     )
 }

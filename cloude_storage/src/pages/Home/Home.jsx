@@ -1,7 +1,7 @@
 import S from './Home.module.css'
 import { ListMenu } from '../../components/ListMenu/ListMenu'
 import { LinkRegistration } from '../../components/LinkRegistration/LinkRegistration'
-import { Form } from '../../components/EntryForm/EntryForm'
+import { EntryForm } from '../../components/EntryForm/EntryForm'
 
 export function Home() {
     return(
@@ -9,7 +9,7 @@ export function Home() {
         <div className={S.container}>
             <ListMenu/>
             <LinkRegistration/>
-            <Form submitText={'Войти'}/>
+            <EntryForm submitText={'Войти'}/>
         </div> 
         
         

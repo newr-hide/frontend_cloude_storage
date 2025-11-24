@@ -1,0 +1,11 @@
+.document {
+    display: flex;
+    gap: 20px;
+    color: rgb(180, 240, 182);
+}
+
+
+
+.label {
+    color: rgb(180, 240, 182);
+}

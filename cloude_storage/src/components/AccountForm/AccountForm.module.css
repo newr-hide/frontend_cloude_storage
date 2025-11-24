@@ -12,3 +12,10 @@
     margin-left: 50px;
     margin-top: 10px;
 }
+
+.error {
+    font-family: "Arial Black", Gadget, sans-serif; 
+    font-size: 22px;
+    color: #f2ebeb;
+    margin-left: 14px;
+}
