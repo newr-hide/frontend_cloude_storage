@@ -67,7 +67,7 @@ export function AccountForm({ submitText }) {
                 </div>
             )}
             
-            <Button title={submitText} logoutAccount={handleLogout}/>
+            <Button title={submitText} onClick={handleLogout}/>
         </form>
     );
 }

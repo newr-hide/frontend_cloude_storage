@@ -22,6 +22,8 @@ export function EntryForm({submitText}) {
                 password: password
             });
 
+            localStorage.setItem('token', response.token);
+            
             navigate(`/profile/${response.user.id}`);
         } catch (err) {
             if (err.message === 'Неверные логин или пароль') {
