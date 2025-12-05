@@ -15,7 +15,7 @@ export const api = axios.create({
 api.interceptors.request.use(config => {
 
   const token = localStorage.getItem('access_token')
-  if (token && config.url !== '/users/' && config.method !== 'post') {
+  if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }
 // для передачи файлов
@@ -30,9 +30,8 @@ api.interceptors.request.use(config => {
   }
 
   // Для JSON данных
-  if (typeof config.data === 'object') {
-    config.headers['Content-Type'] = 'application/json'
-    config.data = JSON.stringify(config.data)
+  if (typeof config.data === 'object' && !Array.isArray(config.data) && config.data !== null) {
+    config.headers['Content-Type'] = 'application/json';
   }
 
   return config

@@ -16,6 +16,7 @@ export function EntryForm({submitText}) {
     const handleSubmit = async (event) =>{
         event.preventDefault()
         // console.log({login}, {password})
+        setError('')
         try {
             const response = await loginFunction({
                 login: login,  
@@ -37,11 +38,12 @@ export function EntryForm({submitText}) {
 
     return(
         <form className={S.formRegistr} onSubmit={handleSubmit}>
+            {error && <div className={S.error}>{error}</div>}
                 <div className={S.inscription}>Логин</div>
-                <Input value={login} onChange={(e)=> setLogin(e.target.value)}/>
+                <Input value={login} onChange={(e)=> setLogin(e.target.value)} className={error ? S.errorInput : ''}/>
                 <div className={S.label}>Введите логин</div>
                 <div className={S.inscription}>Пароль</div>
-                <Input value={password} onChange={(e) => setPassword(e.target.value)}/>
+                <Input value={password} type='password' onChange={(e) => setPassword(e.target.value)} className={error ? S.errorInput : ''}/>
                 <div className={S.label}>Введите пароль</div>
                 <Button type={'submit'} title={submitText} />
         </form>

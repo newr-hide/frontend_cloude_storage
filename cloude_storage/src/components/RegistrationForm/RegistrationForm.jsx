@@ -18,16 +18,22 @@ export function RegistrationForm({submitText}) {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        setError('')
         
         try {
+            const validationErrors = []
             if (!validateLogin(login)) {
-                throw new Error('Неверный формат логина');
+                validationErrors.push('Неверный формат логина')
             }
             if (!validateEmail(email)) {
-                throw new Error('Неверный формат email');
+                validationErrors.push('Неверный формат email')
             }
             if (!validatePassword(password)) {
-                throw new Error('Неверный формат пароля');
+                validationErrors.push('Неверный формат пароля')
+            }
+            if (validationErrors.length > 0) {
+                setError(validationErrors.join('\n'))
+                return
             }
             try {
                 const response = await register(
@@ -37,7 +43,7 @@ export function RegistrationForm({submitText}) {
                         password
                     }
                 )
-                console.log('Ответ сервера:', response);
+                // console.log('Ответ сервера:', response);
                 
                 if (!response || !response.tokens || !response.user) {
                     throw new Error('Неверный ответ от сервера');

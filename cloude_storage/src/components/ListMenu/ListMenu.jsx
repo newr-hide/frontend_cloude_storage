@@ -3,7 +3,6 @@ import S from './ListMenu.module.css'
 
 const menu = [
         { title: 'Главная', path: '/' },
-        { title: 'Файлы', path: '/files' },
         { title: 'О нас', path: '/about' }
 ]
 
