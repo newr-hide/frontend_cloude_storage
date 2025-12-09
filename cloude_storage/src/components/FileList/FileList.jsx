@@ -20,6 +20,7 @@ export function FileList({fileList =[], onDelete}) {
     const [newComment, setNewComment] = useState('')
 
     const sortedFiles = [...fileList].sort((a, b) => {
+        // console.log(fileList)
         return new Date(b.uploaded_at) - new Date(a.uploaded_at)
     })
 
@@ -138,7 +139,7 @@ export function FileList({fileList =[], onDelete}) {
                                 <span 
                                     onClick={() => handleEditName(file)}
                                 >
-                                    {getFileName(file.file)}
+                                    {getFileName(file.original_name)}
                                 </span>
                             )}</td>
                 <td className={S.label}>{editingFile?.id === file.id && editingFile.editingComment ? (
@@ -155,9 +156,9 @@ export function FileList({fileList =[], onDelete}) {
                                     {file.comment}
                                 </span>
                             )}</td>
-                <td className={S.label}>{formatFileSize(file.size)}</td>
+                <td className={S.label}>{formatFileSize(file.file_size)}</td>
                 <td className={S.label}>{formatDate(file.uploaded_at)}</td>
-                <td className={S.label}>{file.dateDownload}</td>
+                <td className={S.label}>{file.last_downloaded}</td>
                 <td>
                     <div>
                         <Button onClick={() => {handleDownload(file.id, getFileName(file.file))}} title={<DownloadIcon />} className={S.btn}/>  

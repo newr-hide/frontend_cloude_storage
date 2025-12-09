@@ -4,22 +4,24 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { getUserInfo } from '../../api/userService'
 import { api } from '../../api/api'
+
 export function AccountForm({ submitText }) {
-    const { userId } = useParams();
+    const { userId, adminId } = useParams();
     const [userInfo, setUserInfo] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate()
-
+    // console.log(userId)
+    const id = userId || adminId
     useEffect(() => {
         const fetchUserInfo = async () => {
             try {
-                if (!userId) {
+                if (!id) {
                     throw new Error('ID пользователя не указан');
                 }
                 
                 setLoading(true);
-
+                
                 const token = localStorage.getItem('access_token');
                 if (!token) {
                     throw new Error('Токен отсутствует');
@@ -28,7 +30,7 @@ export function AccountForm({ submitText }) {
                 api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
                 
 
-                const response = await getUserInfo(userId);
+                const response = await getUserInfo(id);
                 // console.log(response)
                 setUserInfo(response);
                 
@@ -40,10 +42,10 @@ export function AccountForm({ submitText }) {
             }
         };
 
-        if (userId) {
+        if (id) {
             fetchUserInfo();
         }
-    }, [userId]);
+    }, [id]);
     const handleLogout = () => {
         localStorage.removeItem('refresh_token')
         localStorage.removeItem('access_token')

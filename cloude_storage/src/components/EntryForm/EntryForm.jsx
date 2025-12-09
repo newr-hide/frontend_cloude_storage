@@ -12,20 +12,24 @@ export function EntryForm({submitText}) {
     const [error, setError] = useState()
     const navigate = useNavigate()
 
-    
     const handleSubmit = async (event) =>{
         event.preventDefault()
         // console.log({login}, {password})
         setError('')
         try {
-            const response = await loginFunction({
+            const {token, user} = await loginFunction({
                 login: login,  
                 password: password
             });
 
-            localStorage.setItem('token', response.token);
-            
-            navigate(`/profile/${response.user.id}`);
+            localStorage.setItem('token', token);
+            if (user.is_admin) {
+                // console.log(user)
+                navigate(`/admin/${user.id}`);
+            } else {
+                // console.log(user)
+                navigate(`/profile/${user.id}`);
+            }
         } catch (err) {
             if (err.message === 'Неверные логин или пароль') {
                 setError('Неверные логин или пароль');
@@ -34,7 +38,7 @@ export function EntryForm({submitText}) {
             }
             console.error('Ошибка при авторизации:', err);
         }
-    }
+    };
 
     return(
         <form className={S.formRegistr} onSubmit={handleSubmit}>

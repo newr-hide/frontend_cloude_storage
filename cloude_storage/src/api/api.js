@@ -73,8 +73,16 @@ export const loginFunction = async (credentials) => {
     localStorage.setItem('user_id', user.id)
     localStorage.setItem('user_login', user.login)
     localStorage.setItem('user_mail', user.email)
+    localStorage.setItem('is_admin', user.is_admin)
     
-    return response.data
+    return {
+      token: access,
+      user: {
+          id: user.id,
+          login: user.login,
+          email: user.email,
+          is_admin: user.is_admin
+      }}
   } catch (error) {
     if (error.response && error.response.status === 401) {
       throw new Error('Неверные логин или пароль')

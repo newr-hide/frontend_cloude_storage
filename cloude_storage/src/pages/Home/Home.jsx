@@ -4,10 +4,14 @@ import { LinkRegistration } from '../../components/LinkRegistration/LinkRegistra
 import { EntryForm } from '../../components/EntryForm/EntryForm'
 
 export function Home() {
+    const menu = [
+        { title: 'Главная', path: '/' },
+        { title: 'О нас', path: '/about' }
+]
     return(
        
         <div className={S.container}>
-            <ListMenu/>
+            <ListMenu menuList={menu}/>
             <LinkRegistration/>
             <EntryForm submitText={'Войти'}/>
         </div> 

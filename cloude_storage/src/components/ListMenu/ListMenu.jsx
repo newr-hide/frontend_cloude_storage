@@ -1,15 +1,15 @@
 import { MenuItem } from '../MenuItem/MenuItem'
 import S from './ListMenu.module.css'
 
-const menu = [
-        { title: 'Главная', path: '/' },
-        { title: 'О нас', path: '/about' }
-]
 
-export function ListMenu() {
+
+export function ListMenu({menuList}) {
+    if (!Array.isArray(menuList) || menuList.length === 0) {
+        return null;
+    }
     return (
         <ol className={S.listMenu}>
-            {menu.map((menuItem) => (
+            {menuList.map((menuItem) => (
                 <li key={menuItem.title} className={S.listItem}>
                     <MenuItem label={menuItem.title} path={menuItem.path}/>
                 </li>
