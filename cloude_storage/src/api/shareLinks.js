@@ -1,7 +1,7 @@
 import { api } from "./api"
 
 export const createShareLink = async (fileId) => {
-    console.log(fileId)
+    // console.log(fileId)
     try {
         const response = await api.post('/create-share-link/', {'file-id': fileId})
         return response.data.share_url

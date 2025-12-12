@@ -5,19 +5,23 @@ import DownloadIcon from '@mui/icons-material/Download'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import ShareIcon from '@mui/icons-material/Share'
 import DeleteIcon from '@mui/icons-material/Delete'
+
+import { Snackbar } from '@mui/material'
+
 import { useState } from 'react'
 import { downloadFile } from '../../api/downloadFile'
 import { createShareLink } from '../../api/shareLinks'
 import { Input } from '../Input/Input'
-import { updateFile } from '../../api/onUpdate'
+import { updateFile } from '../../api/updateFile'
+import { showFile } from '../../api/showFile'
 
-
-export function FileList({fileList =[], onDelete}) {
+export function FileList({fileList =[], onRefresh, onDelete}) {
     const [copied, setCopied] = useState(false)
     const [shareUrl, setShareUrl] = useState('')
     const [editingFile, setEditingFile] = useState(null)
     const [newName, setNewName] = useState('')
     const [newComment, setNewComment] = useState('')
+    
 
     const sortedFiles = [...fileList].sort((a, b) => {
         // console.log(fileList)
@@ -65,17 +69,21 @@ export function FileList({fileList =[], onDelete}) {
         }
     };
 
-    const handleCopyLink = (url) => {
-        navigator.clipboard.writeText(url)
-            .then(() => {
-                setCopied(true);
-                setTimeout(() => setCopied(false), 2000)
-            })
-            .catch(err => console.error('Не удалось скопировать ссылку:', err))
+    const handleCopyLink = async (url) => {
+        try {
+            await navigator.clipboard.writeText(url)
+            setCopied(true)
+            setTimeout(() => {
+                setCopied(false)
+            }, 2000)
+        } catch (err) {
+            console.error('Не удалось скопировать ссылку:', err)
+        }
     }
 
     const handleCreateShareLink = async (fileId) => {
         try {
+            
             const url = await createShareLink(fileId)
             setShareUrl(url)
             handleCopyLink(url)
@@ -86,32 +94,47 @@ export function FileList({fileList =[], onDelete}) {
 
     const handleEditName = (file) => {
         setEditingFile({ ...file, editingName: true })
-        setNewName(getFileName(file.file))
+        setNewName(getFileName(file.original_name))
     }
     
     const handleSave = async (fileId) => {
         try {
-            const data = {};
-            if (editingFile.editingName && newName !== getFileName(editingFile.file)) {
-                data.file = newName}
             
-            if (Object.keys(data).length > 0) {
-                await updateFile(fileId, data);
-                setEditingFile(null);
-                setNewName('');
-            } else {
-                setEditingFile(null);
+            if(newName){
+            const response = await updateFile(fileId, { original_name: newName })
+            setEditingFile(null)
+            setNewName('')}
+            if(newComment){
+                const response = await updateFile(fileId, { comment: newComment })
+            setEditingFile(null)
+            setNewComment('')
+            }
+
+            if (onRefresh) {
+                onRefresh();
             }
         } catch (error) {
-            console.error('Ошибка при сохранении редактирования файла:', error);
+            console.error('Ошибка при сохранении редактирования файла:', error)
         }
-    };
-    const handleEditComment = () => {
+    }
 
+    const handleEditComment = (file) => {
+        setEditingFile({ ...file, editingComment: true })
+        setNewComment(file.comment)
+    }
+
+    const handleShowFile = async (fileId) => {
+        // console.log(fileId)
+        try {
+            await showFile(fileId)
+
+        } catch (error) {
+            
+        }
     }
 
     return(
-        
+        <>
         <table className={S.listDocument}>
         <thead className={S.titleList}>
             <tr>
@@ -133,7 +156,7 @@ export function FileList({fileList =[], onDelete}) {
                                     value={newName} 
                                     onChange={(e) => setNewName(e.target.value)} 
                                     className={S.input}
-                                    onBlur={() => handleSave(file.id, 'name')}
+                                    onBlur={() => handleSave(file.id)}
                                 />
                             ) : (
                                 <span 
@@ -143,11 +166,11 @@ export function FileList({fileList =[], onDelete}) {
                                 </span>
                             )}</td>
                 <td className={S.label}>{editingFile?.id === file.id && editingFile.editingComment ? (
-                                <textarea 
+                                <Input 
                                     value={newComment} 
                                     onChange={(e) => setNewComment(e.target.value)} 
-                                    className={S.textarea}
-                                    onBlur={() => handleSave(file.id, 'comment')}
+                                    className={S.input}
+                                    onBlur={() => handleSave(file.id)}
                                 />
                             ) : (
                                 <span 
@@ -162,8 +185,9 @@ export function FileList({fileList =[], onDelete}) {
                 <td>
                     <div>
                         <Button onClick={() => {handleDownload(file.id, getFileName(file.file))}} title={<DownloadIcon />} className={S.btn}/>  
-                        <Button title={<VisibilityIcon />} className={S.btn}/>
-                        <Button title={<ShareIcon  onClick={() => handleCreateShareLink(file.id)}/>} className={S.btn}/>
+                        <Button onClick={() => {handleShowFile(file.id)}} title={<VisibilityIcon />} className={S.btn}/>
+                        <Button title={<ShareIcon/> } onClick={() => handleCreateShareLink(file.id)} className={S.btn}/>
+                        
                         <Button onClick={() => onDelete(file.id)} title={<DeleteIcon />} className={S.btn}/>
                     </div>
                 </td>
@@ -171,5 +195,16 @@ export function FileList({fileList =[], onDelete}) {
 ))}
         </tbody>
         </table>
+        <Snackbar
+                anchorOrigin={{
+                    vertical: 'center',
+                    horizontal: 'center',
+                }}
+                open={copied}
+                autoHideDuration={2000}
+                message="Ссылка скопирована!"
+                
+            />
+        </>
     )
 }

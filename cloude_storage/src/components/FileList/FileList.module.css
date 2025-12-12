@@ -67,6 +67,15 @@ td:nth-child(6) {
   width: 350px;
   border: 1px solid black;
   text-align: center;
+  position: relative;
 }
+
+.btnLabel {
+  position: absolute;
+  color: aqua;
+  right: 25px;
+  top: 300px;
+}
+
 
 

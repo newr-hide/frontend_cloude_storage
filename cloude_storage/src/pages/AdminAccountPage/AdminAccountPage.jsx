@@ -5,7 +5,7 @@ import { FormFileUploader } from '../../components/FormFileUploader/FormFileUplo
 import { FileList } from '../../components/FileList/FileList'
 import { useState, useEffect } from 'react'
 import { api } from '../../api/api'
-import { deleteFile } from '../../api/delete'
+import { deleteFile } from '../../api/deleteFile'
 import { useParams } from 'react-router-dom'
 
 
@@ -50,7 +50,7 @@ export function AdminAccountPage() {
                     <ListMenu menuList={menuList}/>
                     {isLoading && <div>Загрузка файлов...</div>}
                     <FormFileUploader onSuccess={handleRefresh}/>
-                    <FileList fileList={fileList} onDelete={handleFileDelete}/>
+                    <FileList fileList={fileList} onRefresh={handleRefresh} onDelete={handleFileDelete}/>
         </div>
     )
 }

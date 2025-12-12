@@ -7,7 +7,7 @@ import {useNavigate} from 'react-router-dom'
 
 export function FormFileUploader({ onSuccess }) {
     const navigate = useNavigate();
-    const [fileName, setFileName] = useState('Загрузить файл')
+    const [fileName, setFileName] = useState('Выбрать файл')
     const [comment, setComment] = useState('')
     const [file, setFile] = useState(null)
     const [error, setError] = useState('')

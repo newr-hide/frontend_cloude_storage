@@ -13,3 +13,12 @@
     margin-top: 15px;
     
 }
+
+.btn:hover {
+    background-color: #aba7a7; 
+}
+
+.btn:active {
+    background-color: #313030;
+    transform: scale(0.90);
+}

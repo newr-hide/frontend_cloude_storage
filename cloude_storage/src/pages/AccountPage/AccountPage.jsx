@@ -4,7 +4,7 @@ import S from './AccountPage.module.css'
 import { FileList } from '../../components/FileList/FileList'
 import { useState } from 'react'
 import { api } from '../../api/api'
-import { deleteFile } from '../../api/delete'
+import { deleteFile } from '../../api/deleteFile'
 import { useEffect} from 'react'
 
 export function AccountPage() {
@@ -45,7 +45,7 @@ export function AccountPage() {
 
             {isLoading && <div>Загрузка файлов...</div>}
             <FormFileUploader onSuccess={handleRefresh}/>
-            <FileList fileList={fileList} onDelete={handleFileDelete}/>
+            <FileList fileList={fileList} onRefresh={handleRefresh} onDelete={handleFileDelete}/>
             
         
         </div>

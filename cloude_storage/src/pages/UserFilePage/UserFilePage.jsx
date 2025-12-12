@@ -4,7 +4,7 @@ import {useState, useEffect} from 'react'
 import { FileList } from '../../components/FileList/FileList';
 import { api } from '../../api/api';
 import { Button } from '../../components/Button/Button';
-
+import { deleteFile } from '../../api/deleteFile'; 
 
 export function UserFilePage() {
     const { userId, adminId } = useParams();
