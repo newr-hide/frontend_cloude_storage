@@ -15,7 +15,7 @@ export function AccountPage() {
         try {
             setIsLoading(true)
             const response = await api.get('/files/')
-            // console.log(response.data)
+            console.log(response.data)
             setFileList(response.data)
             setIsLoading(false)
         } catch (error) {
@@ -24,6 +24,7 @@ export function AccountPage() {
             setIsLoading(false)
         }
     }
+
       useEffect(()=> {
             handleRefresh()
         },[])

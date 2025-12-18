@@ -1,10 +1,8 @@
 import { api } from './api';
 
 export const getUserInfo = async (userId) => {
+ 
     try {
-        const token = localStorage.getItem('access_token')
-        api.defaults.headers.common['Authorization'] = `Bearer ${token}`
-       
         const response = await api.get(`/users/${userId}`);
         
         if (response.status >= 200 && response.status < 300) {

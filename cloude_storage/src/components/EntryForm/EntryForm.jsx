@@ -17,12 +17,11 @@ export function EntryForm({submitText}) {
         // console.log({login}, {password})
         setError('')
         try {
-            const {token, user} = await loginFunction({
+            const {user} = await loginFunction({
                 login: login,  
                 password: password
             });
 
-            localStorage.setItem('token', token);
             if (user.is_admin) {
                 // console.log(user)
                 navigate(`/admin/${user.id}`);

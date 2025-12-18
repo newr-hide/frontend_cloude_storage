@@ -20,18 +20,10 @@ export function AccountForm({ submitText }) {
                     throw new Error('ID пользователя не указан');
                 }
                 
-                setLoading(true);
-                
-                const token = localStorage.getItem('access_token');
-                if (!token) {
-                    throw new Error('Токен отсутствует');
-                }
-                
-                api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-                
+                setLoading(true);  
 
                 const response = await getUserInfo(id);
-                // console.log(response)
+                 console.log(response)
                 setUserInfo(response);
                 
             } catch (err) {
@@ -47,10 +39,7 @@ export function AccountForm({ submitText }) {
         }
     }, [id]);
     const handleLogout = () => {
-        localStorage.removeItem('refresh_token')
-        localStorage.removeItem('access_token')
-        localStorage.removeItem('user_id')
-        localStorage.removeItem('user_login')
+        
         navigate('/',{ replace: true })
     }
     return (

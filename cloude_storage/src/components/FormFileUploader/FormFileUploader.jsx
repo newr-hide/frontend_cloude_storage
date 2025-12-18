@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { Input } from '../Input/Input'
 import { upload } from '../../api/fileUpload'
 import {useNavigate} from 'react-router-dom'
+import { api } from '../../api/api'
 
 export function FormFileUploader({ onSuccess }) {
     const navigate = useNavigate();
@@ -12,14 +13,7 @@ export function FormFileUploader({ onSuccess }) {
     const [file, setFile] = useState(null)
     const [error, setError] = useState('')
 
-    useEffect(() => {
-        const token = localStorage.getItem('token')
-        if (!token) {
-            console.error('Токен отсутствует в localStorage')
-            
-            navigate('/')
-        }
-    }, []);
+    
 
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
@@ -29,37 +23,46 @@ export function FormFileUploader({ onSuccess }) {
         }
       };
 
-    const handleSubmit = async (event) => {
-        event.preventDefault()
-        console.log('Отправляем POST-запрос');
-       
-        // console.log(fileName, comment)
+      const handleSubmit = async (event) => {
+        event.preventDefault();
+        // console.log('Отправляем POST-запрос')
+
         try {
-            if(!file) {
+            if (!file) {
                 throw new Error('Нет файла для загрузки')
             }
-            const token = localStorage.getItem('token');
-            if (!token) {
-                throw new Error('Отсутствует токен авторизации');
-            }
 
-            const uploadData = {
-                file: file,
-                comment: comment
-            };
-            // console.log(uploadData)
-            await upload(uploadData, token)
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('comment', comment);
+            formData.append('original_name', file.name);
+
+            // Добавляем логирование отправляемых данных
+            console.log('Отправляем данные:', {
+                file: file.name,
+                comment: comment,
+                original_name: file.name
+            });
+
+            const response = await api.post('/files/', formData)
+
+            console.log('Ответ сервера:', response.data)
+
             if (onSuccess) {
                 onSuccess()
             }
 
-            setFileName('Загрузить файл');
-            setFile(null);
-            setComment('');
-            setError('');
-            
+            setFileName('Загрузить файл')
+            setFile(null)
+            setComment('')
+            setError('')
+
         } catch (error) {
-            setError(error.message);
+            if (error.response && error.response.status === 401) {
+                navigate('/')
+            } else {
+                setError(error.message || 'Произошла ошибка при загрузке файла')
+            }
         }
     }
    
