@@ -13,7 +13,7 @@ export function AdminAccountPage() {
     const {adminId} = useParams()
     const [fileList, setFileList] = useState([])
     const [isLoading, setIsLoading] = useState(false)
-
+    console.log('Рендер AdminAccountPage с adminId:', adminId);
     const menuList = [
         {title: 'Мои файлы', path: `/admin/${adminId}`},
         {title: 'Управление пользователями', path: `/admin/${adminId}/users`}
@@ -44,9 +44,10 @@ export function AdminAccountPage() {
                  console.error('Ошибка при удалении файла accountPage:', error)
              }}
          }
+        
     return(
         <div className={S.global}>
-                    <AccountForm submitText={'Выйти'}/>
+                    <AccountForm submitText={'Выйти'} userId={adminId}/>
                     <ListMenu menuList={menuList}/>
                     {isLoading && <div>Загрузка файлов...</div>}
                     <FormFileUploader onSuccess={handleRefresh}/>

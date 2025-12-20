@@ -1,29 +1,31 @@
 import S from './AccountForm.module.css'
 import { Button } from '../Button/Button'
-import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useEffect, useState, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { getUserInfo } from '../../api/userService'
-import { api } from '../../api/api'
 
-export function AccountForm({ submitText }) {
-    const { userId, adminId } = useParams();
+
+export function AccountForm({ submitText, userId}) {
+
     const [userInfo, setUserInfo] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate()
+    const previousUserIdRef = useRef()
     // console.log(userId)
-    const id = userId || adminId
+    
     useEffect(() => {
+        console.log('Запуск запроса для userId:', userId)
         const fetchUserInfo = async () => {
             try {
-                if (!id) {
+                if (!userId) {
                     throw new Error('ID пользователя не указан');
                 }
                 
                 setLoading(true);  
 
-                const response = await getUserInfo(id);
-                 console.log(response)
+                const response = await getUserInfo(userId);
+                //  console.log(response)
                 setUserInfo(response);
                 
             } catch (err) {
@@ -34,10 +36,13 @@ export function AccountForm({ submitText }) {
             }
         };
 
-        if (id) {
-            fetchUserInfo();
+        if (userId) {
+            if (userId !== previousUserIdRef.current) {
+                fetchUserInfo()
+                previousUserIdRef.current = userId
+            }
         }
-    }, [id]);
+    }, [userId])
     const handleLogout = () => {
         
         navigate('/',{ replace: true })

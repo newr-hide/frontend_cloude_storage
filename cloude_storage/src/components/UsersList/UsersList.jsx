@@ -12,19 +12,23 @@ import { updateUserAdminStatus } from '../../api/updateUser'
 export function UsersList() {
     const [users, setUsers] = useState([])
     const {adminId} = useParams()
-
+    const [loading, setLoading] = useState(true)
     const parsedAdminId = parseInt(adminId, 10)
 
     useEffect(()=>{
         const fetchUsers = async () => {
             try {
+                setLoading(true)
                 const data = await getUsers()
                 const filteredUsers = data.filter(user => user.id !== parsedAdminId)
                 setUsers(filteredUsers)
                 
             } catch (error) {
                 console.error(error)
+            } finally {
+                setLoading(false)
             }
+            
         }
         fetchUsers()
     },[])
@@ -61,7 +65,7 @@ export function UsersList() {
             
             const message = newIsAdmin 
                 ? 'Пользователь назначен администратором' 
-                : 'Администраторские права сняты';
+                : 'Администраторские права сняты'
             alert(message);
         } catch (error) {
             console.error(error);
@@ -71,6 +75,7 @@ export function UsersList() {
     // console.log(users)
     return(
         <div>
+            {loading && <div>Загрузка...</div>}
             <h2 className={S.title}>Список пользователей:</h2>
             <table className={S.listDocument}>
                 <thead className={S.titleList}>

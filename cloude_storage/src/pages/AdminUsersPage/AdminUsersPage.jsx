@@ -13,7 +13,7 @@ export function AdminUsersPage() {
             ]
     return(
         <div className={S.global}>
-                    <AccountForm submitText={'Выйти'}/>
+                    <AccountForm submitText={'Выйти'} userId={adminId}/>
                     <ListMenu menuList={menuList}/>
                     <UsersList/>
         </div>

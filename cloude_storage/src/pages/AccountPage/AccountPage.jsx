@@ -10,7 +10,7 @@ import { useEffect} from 'react'
 export function AccountPage() {
     const [fileList, setFileList] = useState([])
     const [isLoading, setIsLoading] = useState(false)
-    
+    console.log('Рендер AccountPage с userId:', userId)
     const handleRefresh = async () => {
         try {
             setIsLoading(true)
@@ -41,7 +41,7 @@ export function AccountPage() {
 
     return(
         <div className={S.global}>
-            <AccountForm submitText={'Выйти'}/>
+            <AccountForm submitText={'Выйти'} userId={userId}/>
             <h2 className={S.title}>Мои документы</h2>
 
             {isLoading && <div>Загрузка файлов...</div>}
