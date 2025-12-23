@@ -6,15 +6,18 @@ import { useState } from 'react'
 import { api } from '../../api/api'
 import { deleteFile } from '../../api/deleteFile'
 import { useEffect} from 'react'
+import { useParams } from 'react-router-dom'
 
 export function AccountPage() {
     const [fileList, setFileList] = useState([])
     const [isLoading, setIsLoading] = useState(false)
+    const {userId} = useParams()
     console.log('Рендер AccountPage с userId:', userId)
+
     const handleRefresh = async () => {
         try {
             setIsLoading(true)
-            const response = await api.get('/files/')
+            const response = await api.get(`/files/`)
             console.log(response.data)
             setFileList(response.data)
             setIsLoading(false)

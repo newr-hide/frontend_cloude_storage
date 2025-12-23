@@ -22,7 +22,7 @@ export function UserFilePage() {
                 setIsLoading(true);
                 const userResponse = await api.get(`/users/${userId}`);
                 setUser(userResponse.data);
-                const response = await api.get(`/files/?user_id=${userId}`);
+                const response = await api.get(`/admin/users/${userId}/files/`);
                 setFileList(response.data);
                 setIsLoading(false);
             } catch (error) {

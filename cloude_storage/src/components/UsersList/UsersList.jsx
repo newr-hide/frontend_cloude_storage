@@ -7,6 +7,7 @@ import { Button } from '../Button/Button'
 import {deleteUser} from '../../api/deleteUser'
 import { useParams } from 'react-router-dom'
 import { updateUserAdminStatus } from '../../api/updateUser'
+import { getUserFiles } from '../../api/getUserFiles'
 
 
 export function UsersList() {
@@ -14,6 +15,7 @@ export function UsersList() {
     const {adminId} = useParams()
     const [loading, setLoading] = useState(true)
     const parsedAdminId = parseInt(adminId, 10)
+    const [fileStats, setFileStats] = useState({})
 
     useEffect(()=>{
         const fetchUsers = async () => {
@@ -27,11 +29,18 @@ export function UsersList() {
                 console.error(error)
             } finally {
                 setLoading(false)
-            }
-            
-        }
+            }}
         fetchUsers()
     },[])
+
+
+    const formatBytes = (bytes, decimals = 2) => {
+        if (bytes === 0) return '0 Б'
+        const k = 1024
+        const sizes = ['Б', 'КБ', 'МБ', 'ГБ', 'ТБ', 'ПБ', 'ЭБ', 'ЗБ', 'ЙБ']
+        const i = Math.floor(Math.log(bytes) / Math.log(k))
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(decimals)) + ' ' + sizes[i]
+    }
 
     const handleDeleteUser = async (userId) => {
         if (!window.confirm('Вы уверены, что хотите удалить пользователя?')) {
@@ -86,11 +95,21 @@ export function UsersList() {
                     </tr>
                 </thead>
                 <tbody>
-                {users.map((user) => (
+                {users.map((user) => {
+                    const stats = fileStats[user.id] || { count: 0, size: '0 Б' }
+                    return(
                     <tr key={user.id}>
                     <td className={S.label}>{user.login}</td>
                     <td className={S.label}>{user.email}</td>
-                    <td ><a className={S.label} href={`${user.id}/files`}>Файлы пользователя</a></td>
+                    <td ><a className={S.label} href={`${user.id}/files`}>
+                        <div>
+                            <div>Файлы пользователя</div><br/>
+                            <div>
+                                <span>Количество: {user.total_files} </span><br/>
+                                <span>Объем: {formatBytes(user.total_size)}</span>
+                            </div>
+                            </div></a>
+                    </td>
                     <td><form action="">
                     <Button onClick={() => handleToggleAdmin(user.id, user.is_admin)}
                                     title={user.is_admin ? 'Убрать Админа' : 'Сделать Админом'}/>
@@ -98,7 +117,7 @@ export function UsersList() {
                     </form></td>
                     </tr>
                     
-                ))}
+)})}
                 </tbody>
             </table>
         </div>

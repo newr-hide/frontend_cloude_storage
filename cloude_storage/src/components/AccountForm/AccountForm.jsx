@@ -3,7 +3,7 @@ import { Button } from '../Button/Button'
 import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getUserInfo } from '../../api/userService'
-
+import { api } from '../../api/api'
 
 export function AccountForm({ submitText, userId}) {
 
@@ -43,8 +43,10 @@ export function AccountForm({ submitText, userId}) {
             }
         }
     }, [userId])
-    const handleLogout = () => {
-        
+    const handleLogout = async (e) => {
+        e.preventDefault()
+        await api.post('/auth/logout/', {})
+
         navigate('/',{ replace: true })
     }
     return (
