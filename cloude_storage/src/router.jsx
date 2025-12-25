@@ -6,6 +6,7 @@ import { AccountPage } from './pages/AccountPage/AccountPage'
 import { AdminAccountPage } from './pages/AdminAccountPage/AdminAccountPage';
 import { AdminUsersPage } from './pages/AdminUsersPage/AdminUsersPage';
 import { UserFilePage } from './pages/UserFilePage/UserFilePage';
+import { ProtectedRoute } from './components/ProtectedRoute/ProtectedRoute';
 export default function AppRouter() {
     return (
         <Router>
@@ -13,10 +14,10 @@ export default function AppRouter() {
                 <Route path="/" element={<Home/>} />
                 <Route path="/registration" element={<Registration />} />
                 <Route path='/about' element={<About/>}/>
-                <Route path='/profile/:userId' element={<AccountPage/>}/>
-                <Route path='/admin/:adminId' element={<AdminAccountPage/>}/>
-                <Route path='/admin/:adminId/users' element= {<AdminUsersPage/>}/>
-                <Route path='/admin/:adminId/:userId/files' element={<UserFilePage/>} />
+                <Route path='/profile/:userId' element={<ProtectedRoute><AccountPage/></ProtectedRoute>}/>
+                <Route path='/admin/:adminId' element={<ProtectedRoute><AdminAccountPage/></ProtectedRoute>}/>
+                <Route path='/admin/:adminId/users' element= {<ProtectedRoute><AdminUsersPage/></ProtectedRoute>}/>
+                <Route path='/admin/:adminId/:userId/files' element={<ProtectedRoute><UserFilePage/></ProtectedRoute>} />
              
             </Routes>
         </Router>
