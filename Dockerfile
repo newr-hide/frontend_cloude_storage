@@ -20,7 +20,7 @@ EXPOSE 5173
 
 FROM nginx:stable-alpine
 
-COPY --from=build /dist /usr/share/nginx/html
+COPY --from=builder /app/cloude_storage/dist /usr/share/nginx/html
 COPY --from=build nginx.conf /etc/nginx/conf.d/default.conf
 # Запускаем приложение
 CMD ["nginx", "-g", "daemon off;"]
