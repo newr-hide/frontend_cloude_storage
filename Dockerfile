@@ -1,0 +1,26 @@
+FROM node:22-alpine as build
+
+# Устанавливаем рабочую директорию
+WORKDIR /app
+
+# Копируем package.json и package-lock.json
+COPY package*.json ./
+
+# Устанавливаем зависимости
+RUN npm ci
+
+# Копируем весь проект
+COPY . .
+
+# Собираем приложение
+RUN npm run build
+
+# Экспонируем порт (по умолчанию Vite использует 5173)
+EXPOSE 5173
+
+FROM nginx:stable-alpine
+
+COPY --from=build /dist /usr/share/nginx/html
+COPY --from=build nginx.conf /etc/nginx/conf.d/default.conf
+# Запускаем приложение
+CMD ["nginx", "-g", "daemon off;"]
