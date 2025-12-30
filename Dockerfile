@@ -13,6 +13,7 @@ RUN npm ci --production=false
 COPY . .
 RUN npm install vite@latest --save-dev
 RUN npm install @vitejs/plugin-react --save-dev
+RUN npm install react-router-dom --save
 # Собираем приложение
 RUN npm run build
 
