@@ -11,7 +11,7 @@ RUN npm ci --production=false
 
 # Копируем весь проект
 COPY . .
-
+RUN npm install vite@latest --save-dev
 # Собираем приложение
 RUN npm run build
 
