@@ -1,28 +1,25 @@
-FROM node:22-alpine as build
+FROM node:22-alpine as builder
 
-# Устанавливаем рабочую директорию
 WORKDIR /app
 
-# Копируем package.json и package-lock.json
 COPY package*.json ./
+
 COPY cloude_storage/package*.json ./cloude_storage/
-# Устанавливаем зависимости
+
 RUN npm ci --production=false
 
-# Копируем весь проект
-COPY . .
-RUN npm install vite@latest --save-dev
-RUN npm install @vitejs/plugin-react --save-dev
-RUN npm install react-router-dom --save
-# Собираем приложение
-RUN npm run build
+WORKDIR /app/cloude_storage
 
-# Экспонируем порт (по умолчанию Vite использует 5173)
-EXPOSE 5173
+RUN npm ci --production=false
+
+WORKDIR /app
+
+COPY . .
+
+RUN npm run build
 
 FROM nginx:stable-alpine
 
-COPY --from=build /app/cloude_storage/dist /usr/share/nginx/html
-COPY --from=build nginx.conf /etc/nginx/conf.d/default.conf
-# Запускаем приложение
+COPY --from=builder /app/cloude_storage/dist /usr/share/nginx/html
+EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
