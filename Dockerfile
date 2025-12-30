@@ -12,6 +12,7 @@ RUN npm ci --production=false
 # Копируем весь проект
 COPY . .
 RUN npm install vite@latest --save-dev
+RUN npm install @vitejs/plugin-react --save-dev
 # Собираем приложение
 RUN npm run build
 
