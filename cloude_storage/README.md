@@ -1,16 +1,60 @@
-# React + Vite
+# Cloud Storage
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Описание проекта
+Облачное хранилище — веб‑приложение для безопасного хранения и управления файлами с разграничением прав доступа.
 
-Currently, two official plugins are available:
+## Описание
+Проект представляет собой клиентскую часть облачного хранилища с:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- авторизацией и регистрацией пользователей;
 
-## React Compiler
+- личным кабинетом;
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- админ‑панелью для управления пользователями и их файлами;
 
-## Expanding the ESLint configuration
+- маршрутизацией через react-router-dom;
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- стилизацией на базе MUI и Emotion.
+
+## Технические характеристики
+Тип проекта: ES-модуль (type: "module").
+Сборка: Vite.
+Фронтенд‑стек: React 19, React DOM.
+Стили: @mui/material, @emotion/react, @emotion/styled.
+HTTP‑клиент: Axios.
+
+# Установка и запуск
+## Установите зависимости:
+
+bash
+npm install
+# Запустите режим разработки:
+
+bash
+npm run dev
+# Соберите проект для продакшена:
+
+bash
+npm run build
+# Предварительный просмотр сборки:
+
+bash
+npm run preview
+
+# Структура маршрутов
+Приложение использует react-router-dom для клиентской маршрутизации:
+
+/ — главная страница.
+/registration — форма регистрации.
+/about — страница «О проекте».
+/profile/:userId — личный кабинет пользователя (требуется авторизация).
+/admin/:adminId — панель администратора (требуется роль админа).
+/admin/:adminId/users — список пользователей для администратора.
+/admin/:adminId/:userId/files — файлы конкретного пользователя (доступно администратору).
+
+# Защищённые маршруты
+Все маршруты, требующие авторизации, обернуты в компонент <ProtectedRoute>. Он проверяет аутентификацию и перенаправляет на страницу входа при отсутствии валидного токена.
+
+Инструкция по развертыванию приложения на сервере находится по ссылке: 
+git clone https://github.com/newr-hide/backend_cloude_storage.git
+
